@@ -21,7 +21,10 @@ jobs:
     steps:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
+    
+    - name: Store GITHUB_TOKEN on disk
+      run: echo ${{ secrets.GITHUB_TOKEN }} > $GITHUB_WORKSPACE/examples/gh.token
 
     # Runs a single command using the runners shell
-    - name: Run a one-line script
-      run: $GITHUB_WORKSPACE/examples/bazel-deploy.sh
+    - name: Run deploy script
+      run: GITHUB_TOKEN_PATH=$GITHUB_WORKSPACE/examples/gh.token $GITHUB_WORKSPACE/examples/bazel-deploy.sh
