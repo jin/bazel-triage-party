@@ -22,6 +22,12 @@ jobs:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
     
+    - name: Setup gcloud environment
+      uses: GoogleCloudPlatform/github-actions@0.1.2
+      with:
+        # The service account key which will be used for authentication.
+        service_account_key: ${{ secrets.GCLOUD_SERVICE_KEY }}
+    
     - name: Store GITHUB_TOKEN on disk
       run: echo ${{ secrets.GITHUB_TOKEN }} > $GITHUB_WORKSPACE/examples/gh.token
 
