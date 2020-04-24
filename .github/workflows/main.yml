@@ -30,9 +30,9 @@ jobs:
         # The service account key which will be used for authentication.
         service_account_key: ${{ secrets.GCLOUD_SERVICE_KEY }}
 
-	  # Configure docker to use the gcloud command-line tool as a credential helper
+    # Configure docker to use the gcloud command-line tool as a credential helper
     - name: Configure docker with gcloud
-    - run: |
+      run: |
         # Set up docker (used in deploy script) to authenticate via gcloud command-line tool.
         gcloud auth configure-docker
     
