@@ -19,6 +19,7 @@ settings:
     - https://github.com/bazelbuild/bazel
 
 strategies:
+
   - id: daily-triage
     name: Daily Triage
     dedup: true
@@ -52,6 +53,16 @@ strategies:
       - configurability-issue-needs-triage
       - configurability-issue-slo-exceeded-p1
       - configurability-pr-reviewable
+
+  - id: team-core
+    name: Core
+    dedup: true
+    description: >
+      Bazel Core Team's issues and PRs
+    tactics:
+      - core-issue-needs-triage
+      - core-issue-slo-exceeded-p1
+      - core-pr-reviewable
  
   - id: team-front-end
     name: Front End
@@ -63,6 +74,16 @@ strategies:
       - front-end-issue-slo-exceeded-p1
       - front-end-pr-reviewable
 
+  - id: team-macOS
+    name: macOS
+    dedup: true
+    description: >
+      Bazel macOS Team's issues and PRs
+    tactics:
+      - macOS-issue-needs-triage
+      - macOS-issue-slo-exceeded-p1
+      - macOS-pr-reviewable
+
   - id: team-Local-Exec
     name: Local-Exec
     dedup: true
@@ -73,15 +94,43 @@ strategies:
       - local-exec-issue-slo-exceeded-p1
       - local-exec-pr-reviewable
 
-  - id: team-macOS
-    name: macOS
+  - id: team-performance
+    name: Performance
     dedup: true
     description: >
-      Bazel macOS Team's issues and PRs
+      Bazel Performance Team's issues and PRs
     tactics:
-      - macOS-issue-needs-triage
-      - macOS-issue-slo-exceeded-p1
-      - macOS-pr-reviewable
+      - performance-issue-needs-triage
+      - performance-issue-slo-exceeded-p1
+      - performance-pr-reviewable
+
+  - id: team-rules
+    name: Rules
+    dedup: true
+    description: >
+      Bazel Rules Team's issues and PRs
+    tactics:
+      - rules-issue-needs-triage
+      - rules-issue-slo-exceeded-p1
+      - rules-pr-reviewable
+
+  - id: team-xProdOSS
+    name: xProdOSS
+    dedup: true
+    description: >
+      Bazel xProdOSS Team's issues and PRs
+    tactics:
+      - xprodoss-issue-needs-triage
+      - xprodoss-issue-slo-exceeded-p1
+      - xprodoss-pr-reviewable
+
+  - id: open
+    name: All open PR's and Issues that should be considered for repository stats (hidden)
+    used_for_statistics: true
+    hidden: true
+    tactics:
+      - open-prs
+      # - open-issues
 
 tactics:
   ### Daily Triage ####
@@ -276,3 +325,137 @@ tactics:
       - label: "cla: yes"
       # Temporarily workaround inability to track PR eligibility
       - updated: +1d
+
+  ### team-XProdOSS ###
+  
+  xprodoss-issue-needs-triage:
+    name: "Front End issues needing triage and prioritization"
+    resolution: "Remove untriaged label, add priority and type"
+    type: issue
+    filters:
+      - label: "team-EngProd|team-XProduct|team-Windows"
+      - label: "untriaged"
+
+  xprodoss-issue-slo-exceeded-p1:
+    name: "P1 bugs, but no updates in 7 days"
+    resolution: "Downgrade to P2 or below"
+    type: issue
+    filters:
+      - label: "team-EngProd|team-XProduct|team-Windows"
+      - label: "P1"
+      - label: "type: bug"
+      - updated: +7d
+
+  xprodoss-pr-reviewable:
+    name: "Pull Requests: Review Ready"
+    resolution: "Review requests or mark them as WIP"
+    type: pull_request
+    filters:
+      - label: "team-EngProd|team-XProduct|team-Windows"
+      - label: "!WIP"
+      - label: "cla: yes"
+      # Temporarily workaround inability to track PR eligibility
+      - updated: +1d
+
+  ### team-Performance ###
+  
+  performance-issue-needs-triage:
+    name: "Issues needing triage and prioritization"
+    resolution: "Remove untriaged label, add priority and type"
+    type: issue
+    filters:
+      - label: "team-Performance"
+      - label: "untriaged"
+
+  performance-issue-slo-exceeded-p1:
+    name: "P1 bugs, but no updates in 7 days"
+    resolution: "Downgrade to P2 or below"
+    type: issue
+    filters:
+      - label: "team-Performance"
+      - label: "P1"
+      - label: "type: bug"
+      - updated: +7d
+
+  performance-pr-reviewable:
+    name: "Pull Requests: Review Ready"
+    resolution: "Review requests or mark them as WIP"
+    type: pull_request
+    filters:
+      - label: "team-Performance"
+      - label: "!WIP"
+      - label: "cla: yes"
+      # Temporarily workaround inability to track PR eligibility
+      - updated: +1d
+
+  ### team-Core ###
+  
+  core-issue-needs-triage:
+    name: "Issues needing triage and prioritization"
+    resolution: "Remove untriaged label, add priority and type"
+    type: issue
+    filters:
+      - label: "team-Core"
+      - label: "untriaged"
+
+  core-issue-slo-exceeded-p1:
+    name: "P1 bugs, but no updates in 7 days"
+    resolution: "Downgrade to P2 or below"
+    type: issue
+    filters:
+      - label: "team-Core"
+      - label: "P1"
+      - label: "type: bug"
+      - updated: +7d
+
+  core-pr-reviewable:
+    name: "Pull Requests: Review Ready"
+    resolution: "Review requests or mark them as WIP"
+    type: pull_request
+    filters:
+      - label: "team-Core"
+      - label: "!WIP"
+      - label: "cla: yes"
+      # Temporarily workaround inability to track PR eligibility
+      - updated: +1d
+
+  ### team-Rules ###
+  
+  rules-issue-needs-triage:
+    name: "Issues needing triage and prioritization"
+    resolution: "Remove untriaged label, add priority and type"
+    type: issue
+    filters:
+      - label: "team-Rules-Server|team-Rules-CPP|team-Rules-Java|team-Rules-Python"
+      - label: "untriaged"
+
+  rules-issue-slo-exceeded-p1:
+    name: "P1 bugs, but no updates in 7 days"
+    resolution: "Downgrade to P2 or below"
+    type: issue
+    filters:
+      - label: "team-Rules-Server|team-Rules-CPP|team-Rules-Java|team-Rules-Python"
+      - label: "P1"
+      - label: "type: bug"
+      - updated: +7d
+
+  rules-pr-reviewable:
+    name: "Pull Requests: Review Ready"
+    resolution: "Review requests or mark them as WIP"
+    type: pull_request
+    filters:
+      - label: "team-Rules-Server|team-Rules-CPP|team-Rules-Java|team-Rules-Python"
+      - label: "!WIP"
+      - label: "cla: yes"
+      # Temporarily workaround inability to track PR eligibility
+      - updated: +1d
+
+  open-prs:
+    name: "Open PRs"
+    type: pull_request
+    state: open
+
+  # open-issues:
+  #   name: "Open Issues"
+  #   type: issue
+  #   state: open
