@@ -23,10 +23,17 @@ Vivid and Sharp: https://visme.co/blog/website-color-schemes/
 #E98074 - light purple - no
 #7D68A3 - light purple - real
 #A4B3B6 - greyish
+
+$bazel-green: #43a047;
+$bazel-green-light: #76d275;
+$bazel-green-dark-left: #00701a;
+$bazel-green-dark-right: #004300;
+$color-on-bazel-green: #fff;
 */
 
 body {
-  background-color: #E4F3F6;
+  /* background-color: #E4F3F6; */
+  background-color: white;
 }
 
 .box {
@@ -41,7 +48,7 @@ body {
 }
 
 .box-header {
-  background-color: #44318D;
+  background-color: #43a047;
   color: #FFF;
   font-weight: bold;
   padding-left: 1rem;
@@ -154,16 +161,16 @@ thead {
 
 .navbar {
   color: #F0F0F0;
-  background-color: #C82F77;
+  background-color: #43a047;
 }
 
 .secondary {
-  background-color: #2A1B3D;
+  background-color: #76d275;
   color: #FFF;
 }
 
 thead {
-  background-color: #7D68A3;
+  background-color: #004300;
 
 }
 
