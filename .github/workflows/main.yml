@@ -29,6 +29,12 @@ jobs:
         service_account_email: ${{ secrets.GCLOUD_SERVICE_EMAIL }}
         # The service account key which will be used for authentication.
         service_account_key: ${{ secrets.GCLOUD_SERVICE_KEY }}
+
+	  # Configure docker to use the gcloud command-line tool as a credential helper
+    - name: Configure docker with gcloud
+    - run: |
+        # Set up docker (used in deploy script) to authenticate via gcloud command-line tool.
+        gcloud auth configure-docker
     
     - name: Store GITHUB_TOKEN on disk
       run: echo ${{ secrets.GITHUB_TOKEN }} > $GITHUB_WORKSPACE/examples/gh.token
