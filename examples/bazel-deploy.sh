@@ -28,7 +28,7 @@ env DOCKER_BUILDKIT=1 docker build \
   --build-arg "CFG=${CONFIG_FILE}" \
   --secret "id=github,src=${GITHUB_TOKEN_PATH}" .
 
-docker push "${IMAGE}" || exit 2
+gcloud docker -- push "${IMAGE}" || exit 2
 
 readonly token="$(cat ${GITHUB_TOKEN_PATH})"
 

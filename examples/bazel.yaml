@@ -18,7 +18,7 @@ settings:
   repos:
     - https://github.com/bazelbuild/bazel
 
-strategies:
+collections:
 
   - id: daily-triage
     name: Daily Triage
@@ -28,111 +28,134 @@ strategies:
 
        * Keeping an open dialog with our users
        * Initial prioritization (does not have to be perfect)
-    tactics:
+    rules:
       - issue-needs-initial-routing
+      - pr-reviewable
       - issue-exceed-slo-p1
       - issue-needs-team-label
-      - pr-reviewable
+      - issue-needs-type-label
 
   - id: team-android
     name: Android
     dedup: true
     description: >
       Bazel Android Team's issues and PRs
-    tactics:
+    rules:
       - android-issue-needs-triage
-      - android-issue-slo-exceeded-p1
       - android-pr-reviewable
+      - android-issue-slo-exceeded-p1
 
   - id: team-configurability
     name: Configurability
     dedup: true
     description: >
       Bazel Configurability Team's issues and PRs
-    tactics:
+    rules:
       - configurability-issue-needs-triage
-      - configurability-issue-slo-exceeded-p1
       - configurability-pr-reviewable
+      - configurability-issue-slo-exceeded-p1
 
   - id: team-core
     name: Core
     dedup: true
     description: >
       Bazel Core Team's issues and PRs
-    tactics:
+    rules:
       - core-issue-needs-triage
-      - core-issue-slo-exceeded-p1
       - core-pr-reviewable
+      - core-issue-slo-exceeded-p1
  
   - id: team-front-end
     name: Front End
     dedup: true
     description: >
       Bazel Front End Team's issues and PRs
-    tactics:
+    rules:
       - front-end-issue-needs-triage
-      - front-end-issue-slo-exceeded-p1
       - front-end-pr-reviewable
+      - front-end-issue-slo-exceeded-p1
 
   - id: team-macOS
     name: macOS
     dedup: true
     description: >
       Bazel macOS Team's issues and PRs
-    tactics:
+    rules:
       - macOS-issue-needs-triage
-      - macOS-issue-slo-exceeded-p1
       - macOS-pr-reviewable
+      - macOS-issue-slo-exceeded-p1
 
   - id: team-Local-Exec
     name: Local-Exec
     dedup: true
     description: >
       Bazel Local Execution Team's issues and PRs
-    tactics:
+    rules:
       - local-exec-issue-needs-triage
-      - local-exec-issue-slo-exceeded-p1
       - local-exec-pr-reviewable
+      - local-exec-issue-slo-exceeded-p1
 
   - id: team-performance
     name: Performance
     dedup: true
     description: >
       Bazel Performance Team's issues and PRs
-    tactics:
+    rules:
       - performance-issue-needs-triage
-      - performance-issue-slo-exceeded-p1
       - performance-pr-reviewable
+      - performance-issue-slo-exceeded-p1
+
+  - id: team-remote-exec
+    name: Remote-Exec
+    dedup: true
+    description: >
+      Bazel Remote Execution Team's issues and PRs
+    rules:
+      - remote-exec-issue-needs-triage
+      - remote-exec-pr-reviewable
+      - remote-exec-issue-slo-exceeded-p1
+
 
   - id: team-rules
     name: Rules
     dedup: true
     description: >
       Bazel Rules Team's issues and PRs
-    tactics:
+    rules:
       - rules-issue-needs-triage
-      - rules-issue-slo-exceeded-p1
       - rules-pr-reviewable
+      - rules-issue-slo-exceeded-p1
 
   - id: team-xProdOSS
     name: xProdOSS
     dedup: true
     description: >
       Bazel xProdOSS Team's issues and PRs
-    tactics:
+    rules:
       - xprodoss-issue-needs-triage
-      - xprodoss-issue-slo-exceeded-p1
       - xprodoss-pr-reviewable
+      - xprodoss-issue-slo-exceeded-p1
+
+  - id: documentation
+    name: Documentation
+    dedup: true
+    description: >
+      Cross-team documentation issues and PRs.
+    rules:
+      - documentation-issue-needs-triage
+      - documentation-pr-reviewable
+      - documentation-issue-slo-exceeded-p1
+      - documentation-issue-all
 
   - id: open
     name: All open PR's and Issues that should be considered for repository stats (hidden)
     used_for_statistics: true
     hidden: true
-    tactics:
+    rules:
       - open-prs
       # - open-issues
 
-tactics:
+rules:
   ### Daily Triage ####
   
   issue-needs-initial-routing:
@@ -162,13 +185,25 @@ tactics:
       - label: "cla: yes"
       # Temporarily workaround inability to track PR eligibility
       - updated: +1d
+      # - tag: "!draft"
+      # - tag: "!requested-changes"
+      # - tag: "!send"
+      # - tag: "!commented"
 
   issue-needs-team-label:
-    name: "Triaged without a teamlabel"
-    resolution: "Add a teamlabel"
+    name: "Triaged without a team label"
+    resolution: "Add a team label"
     type: issue
     filters:
       - label: "!team-.*"
+      - label: "!untriaged"
+
+  issue-needs-type-label:
+    name: "Triaged without a type label"
+    resolution: "Add a type label"
+    type: issue
+    filters:
+      - label: "!type:.*"
       - label: "!untriaged"
 
   ### team-Front-End ###
@@ -201,6 +236,10 @@ tactics:
       - label: "cla: yes"
       # Temporarily workaround inability to track PR eligibility
       - updated: +1d
+      # - tag: "!draft"
+      # - tag: "!requested-changes"
+      # - tag: "!send"
+      # - tag: "!commented"
 
   ### team-Configurability ###
   
@@ -232,6 +271,10 @@ tactics:
       - label: "cla: yes"
       # Temporarily workaround inability to track PR eligibility
       - updated: +1d
+      # - tag: "!draft"
+      # - tag: "!requested-changes"
+      # - tag: "!send"
+      # - tag: "!commented"
 
   ### team-Android ###
   
@@ -263,6 +306,10 @@ tactics:
       - label: "cla: yes"
       # Temporarily workaround inability to track PR eligibility
       - updated: +1d
+      # - tag: "!draft"
+      # - tag: "!requested-changes"
+      # - tag: "!send"
+      # - tag: "!commented"
 
   ### team-macOS ###
   
@@ -294,6 +341,10 @@ tactics:
       - label: "cla: yes"
       # Temporarily workaround inability to track PR eligibility
       - updated: +1d
+      # - tag: "!draft"
+      # - tag: "!requested-changes"
+      # - tag: "!send"
+      # - tag: "!commented"
 
   ### team-Local-Exec ###
   
@@ -325,6 +376,10 @@ tactics:
       - label: "cla: yes"
       # Temporarily workaround inability to track PR eligibility
       - updated: +1d
+      # - tag: "!draft"
+      # - tag: "!requested-changes"
+      # - tag: "!send"
+      # - tag: "!commented"
 
   ### team-XProdOSS ###
   
@@ -356,6 +411,10 @@ tactics:
       - label: "cla: yes"
       # Temporarily workaround inability to track PR eligibility
       - updated: +1d
+      # - tag: "!draft"
+      # - tag: "!requested-changes"
+      # - tag: "!send"
+      # - tag: "!commented"
 
   ### team-Performance ###
   
@@ -387,6 +446,10 @@ tactics:
       - label: "cla: yes"
       # Temporarily workaround inability to track PR eligibility
       - updated: +1d
+      # - tag: "!draft"
+      # - tag: "!requested-changes"
+      # - tag: "!send"
+      # - tag: "!commented"
 
   ### team-Core ###
   
@@ -418,6 +481,10 @@ tactics:
       - label: "cla: yes"
       # Temporarily workaround inability to track PR eligibility
       - updated: +1d
+      # - tag: "!draft"
+      # - tag: "!requested-changes"
+      # - tag: "!send"
+      # - tag: "!commented"
 
   ### team-Rules ###
   
@@ -449,6 +516,87 @@ tactics:
       - label: "cla: yes"
       # Temporarily workaround inability to track PR eligibility
       - updated: +1d
+      # - tag: "!draft"
+      # - tag: "!requested-changes"
+      # - tag: "!send"
+      # - tag: "!commented"
+
+  ### team-remote-Exec ###
+  
+  remote-exec-issue-needs-triage:
+    name: "Issues needing triage and prioritization"
+    resolution: "Remove untriaged label, add priority and type"
+    type: issue
+    filters:
+      - label: "team-Remote-Exec"
+      - label: "untriaged"
+
+  remote-exec-issue-slo-exceeded-p1:
+    name: "P1 bugs, but no updates in 7 days"
+    resolution: "Downgrade to P2 or below"
+    type: issue
+    filters:
+      - label: "team-Remote-Exec"
+      - label: "P1"
+      - label: "type: bug"
+      - updated: +7d
+
+  remote-exec-pr-reviewable:
+    name: "Pull Requests: Review Ready"
+    resolution: "Review requests or mark them as WIP"
+    type: pull_request
+    filters:
+      - label: "team-Remote-Exec"
+      - label: "!WIP"
+      - label: "cla: yes"
+      # Temporarily workaround inability to track PR eligibility
+      - updated: +1d
+      # - tag: "!draft"
+      # - tag: "!requested-changes"
+      # - tag: "!send"
+      # - tag: "!commented"
+
+  ### Documentation ###
+  
+  documentation-issue-needs-triage:
+    name: "Untriaged documentation issues"
+    resolution: "Remove untriaged label and add priority"
+    type: issue
+    filters:
+      - label: "type: documentation"
+      - label: "untriaged"
+
+  documentation-issue-slo-exceeded-p1:
+    name: "P1 bugs, but no updates in 7 days"
+    resolution: "Downgrade to P2 or below"
+    type: issue
+    filters:
+      - label: "type: documentation"
+      - label: "P1"
+      - updated: +7d
+
+  documentation-pr-reviewable:
+    name: "Pull Requests: Review Ready"
+    resolution: "Review requests or mark them as WIP"
+    type: pull_request
+    filters:
+      - label: "type: documentation"
+      - label: "!WIP"
+      - label: "cla: yes"
+      # Temporarily workaround inability to track PR eligibility
+      - updated: +1d
+      # - tag: "!draft"
+      # - tag: "!requested-changes"
+      # - tag: "!send"
+      # - tag: "!commented"
+
+  documentation-issue-all:
+    name: "All documentation issues"
+    resolution: ""
+    type: issue
+    filters:
+      - label: "type: documentation"
+      - updated: +7d
 
   open-prs:
     name: "Open PRs"
